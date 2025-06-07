@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestone Management - IT Project Timeline Tracker</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Global Header Navigation -->
+    <header class="bg-surface border-b border-light shadow-card fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none"/>
+                    </svg>
+                    <h1 class="text-xl font-semibold text-text-primary">IT Project Timeline Tracker</h1>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="dashboard.html" class="text-text-secondary hover:text-primary transition-fast">Dashboard</a>
+                    <a href="capabilities_management.html" class="text-text-secondary hover:text-primary transition-fast">Capabilities</a>
+                    <a href="gantt_view.html" class="text-text-secondary hover:text-primary transition-fast">Plans</a>
+                    <a href="milestone_management.html" class="text-primary font-medium border-b-2 border-primary pb-1">Milestone Management</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded-lg hover:bg-secondary-100 transition-fast" id="mobileMenuBtn">
+                    <svg class="w-6 h-6 text-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div class="md:hidden mt-4 pb-4 border-t border-light hidden" id="mobileMenu">
+                <nav class="flex flex-col space-y-3 pt-4">
+                    <a href="dashboard.html" class="text-text-secondary hover:text-primary transition-fast px-2 py-1">Dashboard</a>
+                    <a href="capabilities_management.html" class="text-text-secondary hover:text-primary transition-fast px-2 py-1">Capabilities</a>
+                    <a href="gantt_view.html" class="text-text-secondary hover:text-primary transition-fast px-2 py-1">Plans</a>
+                    <a href="milestone_management.html" class="text-primary font-medium px-2 py-1">Milestone Management</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20 px-6 max-w-7xl mx-auto">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold text-text-primary mb-2">Milestone Management</h2>
+            <p class="text-text-secondary">Configure technical and business milestones that anchor project timelines across all capabilities</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="mb-6">
+            <div class="border-b border-light">
+                <nav class="flex space-x-8">
+                    <button class="tab-button active py-3 px-1 border-b-2 border-primary text-primary font-medium" data-tab="technical">
+                        Technical Milestones
+                    </button>
+                    <button class="tab-button py-3 px-1 border-b-2 border-transparent text-text-secondary hover:text-primary transition-fast" data-tab="business">
+                        Business Milestones
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Technical Milestones Tab -->
+        <div id="technical-tab" class="tab-content">
+            <!-- Technical Milestones Header -->
+            <div class="card p-6 mb-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-text-primary mb-2">Technical Milestones</h3>
+                        <p class="text-text-secondary">Define technical delivery checkpoints and system implementation markers</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button class="btn-secondary" id="exportTechnicalBtn">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Export Calendar
+                        </button>
+                        <button class="btn-primary" id="addTechnicalBtn">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Add New Milestone
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="mt-6 flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input type="text" placeholder="Search technical milestones..." class="input-field pl-10 w-full" id="technicalSearch">
+                        </div>
+                    </div>
+                    <select class="input-field" id="technicalFilter">
+                        <option value="">All Milestones</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+
+                <!-- Add New Technical Milestone Form (Hidden by default) -->
+                <div id="technicalForm" class="mt-6 p-4 bg-secondary-50 rounded-lg border border-light hidden">
+                    <h4 class="text-md font-semibold text-text-primary mb-4">Add New Technical Milestone</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary mb-2">Milestone Name</label>
+                            <input type="text" placeholder="e.g., API Development Complete" class="input-field w-full" id="technicalName">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary mb-2">Target Date</label>
+                            <input type="date" class="input-field w-full" id="technicalDate">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary mb-2">Description</label>
+                            <input type="text" placeholder="Brief description of milestone" class="input-field w-full" id="technicalDescription">
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3 mt-4">
+                        <button class="btn-secondary" id="cancelTechnicalBtn">Cancel</button>
+                        <button class="btn-primary" id="saveTechnicalBtn">Save Milestone</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Milestones Table -->
+            <div class="card overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-secondary-50 border-b border-light">
+                            <tr>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">
+                                    <input type="checkbox" class="rounded border-light" id="selectAllTechnical">
+                                </th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Milestone Name</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Target Date</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Description</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Usage Count</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Status</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-light">
+                            <!-- Technical Milestone Row 1 -->
+                            <tr class="hover:bg-secondary-50 transition-fast">
+                                <td class="py-4 px-6">
+                                    <input type="checkbox" class="rounded border-light milestone-checkbox">
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="name">
+                                        <span class="display-text font-medium text-text-primary">API Development Complete</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="API Development Complete">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="date">
+                                        <span class="display-text text-text-secondary">2025-02-15</span>
+                                        <input type="date" class="edit-input input-field w-full hidden" value="2025-02-15">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="description">
+                                        <span class="display-text text-text-secondary">Core API endpoints development and testing completed</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="Core API endpoints development and testing completed">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <a href="capabilities_management.html?filter=technical-milestone-1" class="text-primary hover:text-primary-700 font-medium">12 capabilities</a>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="status-warning px-3 py-1 rounded-full text-sm font-medium">In Progress</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="edit-btn p-1 text-text-secondary hover:text-primary transition-fast" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="save-btn p-1 text-accent hover:text-accent-700 transition-fast hidden" title="Save">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                        <button class="cancel-btn p-1 text-text-secondary hover:text-error transition-fast hidden" title="Cancel">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                        <button class="delete-btn p-1 text-text-secondary hover:text-error transition-fast" title="Delete">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Technical Milestone Row 2 -->
+                            <tr class="hover:bg-secondary-50 transition-fast">
+                                <td class="py-4 px-6">
+                                    <input type="checkbox" class="rounded border-light milestone-checkbox">
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="name">
+                                        <span class="display-text font-medium text-text-primary">Database Migration</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="Database Migration">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="date">
+                                        <span class="display-text text-text-secondary">2025-01-30</span>
+                                        <input type="date" class="edit-input input-field w-full hidden" value="2025-01-30">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="description">
+                                        <span class="display-text text-text-secondary">Legacy data migration to new system architecture</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="Legacy data migration to new system architecture">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <a href="capabilities_management.html?filter=technical-milestone-2" class="text-primary hover:text-primary-700 font-medium">8 capabilities</a>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="status-error px-3 py-1 rounded-full text-sm font-medium">Overdue</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="edit-btn p-1 text-text-secondary hover:text-primary transition-fast" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="save-btn p-1 text-accent hover:text-accent-700 transition-fast hidden" title="Save">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                        <button class="cancel-btn p-1 text-text-secondary hover:text-error transition-fast hidden" title="Cancel">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                        <button class="delete-btn p-1 text-text-secondary hover:text-error transition-fast" title="Delete">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Technical Milestone Row 3 -->
+                            <tr class="hover:bg-secondary-50 transition-fast">
+                                <td class="py-4 px-6">
+                                    <input type="checkbox" class="rounded border-light milestone-checkbox">
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="name">
+                                        <span class="display-text font-medium text-text-primary">Security Framework Implementation</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="Security Framework Implementation">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="date">
+                                        <span class="display-text text-text-secondary">2025-03-10</span>
+                                        <input type="date" class="edit-input input-field w-full hidden" value="2025-03-10">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="description">
+                                        <span class="display-text text-text-secondary">Enterprise security protocols and authentication systems</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="Enterprise security protocols and authentication systems">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <a href="capabilities_management.html?filter=technical-milestone-3" class="text-primary hover:text-primary-700 font-medium">15 capabilities</a>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="status-success px-3 py-1 rounded-full text-sm font-medium">On Track</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="edit-btn p-1 text-text-secondary hover:text-primary transition-fast" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="save-btn p-1 text-accent hover:text-accent-700 transition-fast hidden" title="Save">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                        <button class="cancel-btn p-1 text-text-secondary hover:text-error transition-fast hidden" title="Cancel">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                        <button class="delete-btn p-1 text-text-secondary hover:text-error transition-fast" title="Delete">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bulk Actions Bar -->
+                <div class="border-t border-light p-4 bg-secondary-50 hidden" id="technicalBulkActions">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-text-secondary">
+                            <span id="technicalSelectedCount">0</span> milestones selected
+                        </span>
+                        <div class="flex items-center space-x-3">
+                            <button class="btn-secondary text-sm" id="bulkUpdateDatesBtn">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                Update Dates
+                            </button>
+                            <button class="btn-secondary text-sm" id="mergeMilestonesBtn">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                                Merge
+                            </button>
+                            <button class="text-error hover:bg-error-50 px-3 py-1 rounded transition-fast text-sm" id="bulkDeleteBtn">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Milestones Tab -->
+        <div id="business-tab" class="tab-content hidden">
+            <!-- Business Milestones Header -->
+            <div class="card p-6 mb-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-text-primary mb-2">Business Milestones</h3>
+                        <p class="text-text-secondary">Define business delivery checkpoints and stakeholder approval gates</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button class="btn-secondary" id="exportBusinessBtn">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Export Calendar
+                        </button>
+                        <button class="btn-primary" id="addBusinessBtn">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Add New Milestone
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="mt-6 flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input type="text" placeholder="Search business milestones..." class="input-field pl-10 w-full" id="businessSearch">
+                        </div>
+                    </div>
+                    <select class="input-field" id="businessFilter">
+                        <option value="">All Milestones</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+
+                <!-- Add New Business Milestone Form (Hidden by default) -->
+                <div id="businessForm" class="mt-6 p-4 bg-secondary-50 rounded-lg border border-light hidden">
+                    <h4 class="text-md font-semibold text-text-primary mb-4">Add New Business Milestone</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary mb-2">Milestone Name</label>
+                            <input type="text" placeholder="e.g., Stakeholder Sign-off" class="input-field w-full" id="businessName">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary mb-2">Target Date</label>
+                            <input type="date" class="input-field w-full" id="businessDate">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary mb-2">Description</label>
+                            <input type="text" placeholder="Brief description of milestone" class="input-field w-full" id="businessDescription">
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3 mt-4">
+                        <button class="btn-secondary" id="cancelBusinessBtn">Cancel</button>
+                        <button class="btn-primary" id="saveBusinessBtn">Save Milestone</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Milestones Table -->
+            <div class="card overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-secondary-50 border-b border-light">
+                            <tr>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">
+                                    <input type="checkbox" class="rounded border-light" id="selectAllBusiness">
+                                </th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Milestone Name</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Target Date</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Description</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Usage Count</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Status</th>
+                                <th class="text-left py-3 px-6 text-sm font-medium text-text-primary">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-light">
+                            <!-- Business Milestone Row 1 -->
+                            <tr class="hover:bg-secondary-50 transition-fast">
+                                <td class="py-4 px-6">
+                                    <input type="checkbox" class="rounded border-light milestone-checkbox">
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="name">
+                                        <span class="display-text font-medium text-text-primary">Stakeholder Sign-off</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="Stakeholder Sign-off">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="date">
+                                        <span class="display-text text-text-secondary">2025-02-28</span>
+                                        <input type="date" class="edit-input input-field w-full hidden" value="2025-02-28">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="description">
+                                        <span class="display-text text-text-secondary">Final approval from key business stakeholders</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="Final approval from key business stakeholders">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <a href="capabilities_management.html?filter=business-milestone-1" class="text-primary hover:text-primary-700 font-medium">9 capabilities</a>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="status-success px-3 py-1 rounded-full text-sm font-medium">On Track</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="edit-btn p-1 text-text-secondary hover:text-primary transition-fast" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="save-btn p-1 text-accent hover:text-accent-700 transition-fast hidden" title="Save">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                        <button class="cancel-btn p-1 text-text-secondary hover:text-error transition-fast hidden" title="Cancel">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                        <button class="delete-btn p-1 text-text-secondary hover:text-error transition-fast" title="Delete">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Business Milestone Row 2 -->
+                            <tr class="hover:bg-secondary-50 transition-fast">
+                                <td class="py-4 px-6">
+                                    <input type="checkbox" class="rounded border-light milestone-checkbox">
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="name">
+                                        <span class="display-text font-medium text-text-primary">User Training Complete</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="User Training Complete">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="date">
+                                        <span class="display-text text-text-secondary">2025-03-15</span>
+                                        <input type="date" class="edit-input input-field w-full hidden" value="2025-03-15">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="description">
+                                        <span class="display-text text-text-secondary">End-user training sessions and documentation delivery</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="End-user training sessions and documentation delivery">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <a href="capabilities_management.html?filter=business-milestone-2" class="text-primary hover:text-primary-700 font-medium">6 capabilities</a>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="status-warning px-3 py-1 rounded-full text-sm font-medium">At Risk</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="edit-btn p-1 text-text-secondary hover:text-primary transition-fast" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="save-btn p-1 text-accent hover:text-accent-700 transition-fast hidden" title="Save">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                        <button class="cancel-btn p-1 text-text-secondary hover:text-error transition-fast hidden" title="Cancel">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                        <button class="delete-btn p-1 text-text-secondary hover:text-error transition-fast" title="Delete">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Business Milestone Row 3 -->
+                            <tr class="hover:bg-secondary-50 transition-fast">
+                                <td class="py-4 px-6">
+                                    <input type="checkbox" class="rounded border-light milestone-checkbox">
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="name">
+                                        <span class="display-text font-medium text-text-primary">Go-Live Approval</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="Go-Live Approval">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="date">
+                                        <span class="display-text text-text-secondary">2025-04-01</span>
+                                        <input type="date" class="edit-input input-field w-full hidden" value="2025-04-01">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="editable-field" data-field="description">
+                                        <span class="display-text text-text-secondary">Final business approval for production deployment</span>
+                                        <input type="text" class="edit-input input-field w-full hidden" value="Final business approval for production deployment">
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <a href="capabilities_management.html?filter=business-milestone-3" class="text-primary hover:text-primary-700 font-medium">11 capabilities</a>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="status-success px-3 py-1 rounded-full text-sm font-medium">On Track</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="edit-btn p-1 text-text-secondary hover:text-primary transition-fast" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="save-btn p-1 text-accent hover:text-accent-700 transition-fast hidden" title="Save">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                        <button class="cancel-btn p-1 text-text-secondary hover:text-error transition-fast hidden" title="Cancel">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                        <button class="delete-btn p-1 text-text-secondary hover:text-error transition-fast" title="Delete">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bulk Actions Bar -->
+                <div class="border-t border-light p-4 bg-secondary-50 hidden" id="businessBulkActions">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-text-secondary">
+                            <span id="businessSelectedCount">0</span> milestones selected
+                        </span>
+                        <div class="flex items-center space-x-3">
+                            <button class="btn-secondary text-sm" id="bulkUpdateBusinessDatesBtn">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                Update Dates
+                            </button>
+                            <button class="btn-secondary text-sm" id="mergeBusinessMilestonesBtn">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                                Merge
+                            </button>
+                            <button class="text-error hover:bg-error-50 px-3 py-1 rounded transition-fast text-sm" id="bulkDeleteBusinessBtn">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-surface rounded-lg shadow-modal max-w-md w-full mx-4">
+            <div class="p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-error-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-text-primary">Delete Milestone</h3>
+                </div>
+                <p class="text-text-secondary mb-4">
+                    This milestone is referenced by <span id="dependencyCount" class="font-medium text-text-primary">0</span> capabilities. 
+                    Deleting it will remove these references. This action cannot be undone.
+                </p>
+                <div class="flex justify-end space-x-3">
+                    <button class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                    <button class="bg-error text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-fast" id="confirmDeleteBtn">Delete Milestone</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // /home/ubuntu/app/it_project_timeline_tracker/pages/milestone_management.html
+        // Enhanced JavaScript functionality for Milestone Management
+
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Tab switching functionality - ENHANCED
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                
+                // Update tab buttons
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active', 'border-primary', 'text-primary');
+                    btn.classList.add('border-transparent', 'text-text-secondary');
+                });
+                this.classList.add('active', 'border-primary', 'text-primary');
+                this.classList.remove('border-transparent', 'text-text-secondary');
+                
+                // Update tab content with animation
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.style.opacity = '0';
+                    setTimeout(() => {
+                        content.classList.add('hidden');
+                    }, 150);
+                });
+                
+                setTimeout(() => {
+                    const targetTab = document.getElementById(tabName + '-tab');
+                    targetTab.classList.remove('hidden');
+                    targetTab.style.opacity = '1';
+                }, 150);
+            });
+        });
+
+        // Add new milestone form toggles - ENHANCED
+        document.getElementById('addTechnicalBtn').addEventListener('click', function() {
+            const form = document.getElementById('technicalForm');
+            const isHidden = form.classList.contains('hidden');
+            
+            if (isHidden) {
+                form.classList.remove('hidden');
+                form.style.maxHeight = '0px';
+                form.style.overflow = 'hidden';
+                
+                // Animate form appearance
+                setTimeout(() => {
+                    form.style.maxHeight = '200px';
+                    form.style.transition = 'max-height 0.3s ease-out';
+                }, 10);
+                
+                setTimeout(() => {
+                    form.style.overflow = 'visible';
+                    document.getElementById('technicalName').focus();
+                }, 300);
+            } else {
+                form.style.maxHeight = '0px';
+                form.style.overflow = 'hidden';
+                setTimeout(() => {
+                    form.classList.add('hidden');
+                    form.style.maxHeight = '';
+                }, 300);
+            }
+        });
+
+        document.getElementById('addBusinessBtn').addEventListener('click', function() {
+            const form = document.getElementById('businessForm');
+            const isHidden = form.classList.contains('hidden');
+            
+            if (isHidden) {
+                form.classList.remove('hidden');
+                form.style.maxHeight = '0px';
+                form.style.overflow = 'hidden';
+                
+                setTimeout(() => {
+                    form.style.maxHeight = '200px';
+                    form.style.transition = 'max-height 0.3s ease-out';
+                }, 10);
+                
+                setTimeout(() => {
+                    form.style.overflow = 'visible';
+                    document.getElementById('businessName').focus();
+                }, 300);
+            } else {
+                form.style.maxHeight = '0px';
+                form.style.overflow = 'hidden';
+                setTimeout(() => {
+                    form.classList.add('hidden');
+                    form.style.maxHeight = '';
+                }, 300);
+            }
+        });
+
+        // Cancel form buttons - ENHANCED
+        document.getElementById('cancelTechnicalBtn').addEventListener('click', function() {
+            const form = document.getElementById('technicalForm');
+            form.style.maxHeight = '0px';
+            form.style.overflow = 'hidden';
+            
+            setTimeout(() => {
+                form.classList.add('hidden');
+                form.style.maxHeight = '';
+                
+                // Reset form with validation clearing
+                resetForm('technical');
+            }, 300);
+        });
+
+        document.getElementById('cancelBusinessBtn').addEventListener('click', function() {
+            const form = document.getElementById('businessForm');
+            form.style.maxHeight = '0px';
+            form.style.overflow = 'hidden';
+            
+            setTimeout(() => {
+                form.classList.add('hidden');
+                form.style.maxHeight = '';
+                
+                // Reset form with validation clearing
+                resetForm('business');
+            }, 300);
+        });
+
+        function resetForm(type) {
+            document.getElementById(`${type}Name`).value = '';
+            document.getElementById(`${type}Date`).value = '';
+            document.getElementById(`${type}Description`).value = '';
+            
+            // Clear any validation messages
+            document.querySelectorAll(`#${type}Form .error-message`).forEach(error => {
+                error.remove();
+            });
+        }
+
+        // Enhanced form validation
+        function validateForm(type) {
+            const name = document.getElementById(`${type}Name`).value.trim();
+            const date = document.getElementById(`${type}Date`).value;
+            
+            // Clear previous errors
+            document.querySelectorAll(`#${type}Form .error-message`).forEach(error => {
+                error.remove();
+            });
+            
+            let isValid = true;
+            
+            if (!name) {
+                showError(`${type}Name`, 'Milestone name is required');
+                isValid = false;
+            }
+            
+            if (!date) {
+                showError(`${type}Date`, 'Target date is required');
+                isValid = false;
+            } else {
+                const selectedDate = new Date(date);
+                const today = new Date();
+                if (selectedDate < today) {
+                    showError(`${type}Date`, 'Target date cannot be in the past');
+                    isValid = false;
+                }
+            }
+            
+            return isValid;
+        }
+
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const error = document.createElement('div');
+            error.className = 'error-message text-red-500 text-xs mt-1';
+            error.textContent = message;
+            field.parentNode.appendChild(error);
+            field.classList.add('border-red-500');
+        }
+
+        // Save milestone functionality - ENHANCED
+        document.getElementById('saveTechnicalBtn').addEventListener('click', function() {
+            if (!validateForm('technical')) return;
+            
+            const name = document.getElementById('technicalName').value.trim();
+            const date = document.getElementById('technicalDate').value;
+            const description = document.getElementById('technicalDescription').value.trim();
+            
+            // Create new table row
+            const tbody = document.querySelector('#technical-tab tbody');
+            const newRow = createMilestoneRow(name, date, description, 'technical');
+            tbody.appendChild(newRow);
+            
+            // Show success message
+            showSuccessMessage('Technical milestone added successfully!');
+            
+            // Hide form and reset
+            document.getElementById('cancelTechnicalBtn').click();
+        });
+
+        document.getElementById('saveBusinessBtn').addEventListener('click', function() {
+            if (!validateForm('business')) return;
+            
+            const name = document.getElementById('businessName').value.trim();
+            const date = document.getElementById('businessDate').value;
+            const description = document.getElementById('businessDescription').value.trim();
+            
+            // Create new table row
+            const tbody = document.querySelector('#business-tab tbody');
+            const newRow = createMilestoneRow(name, date, description, 'business');
+            tbody.appendChild(newRow);
+            
+            // Show success message
+            showSuccessMessage('Business milestone added successfully!');
+            
+            // Hide form and reset
+            document.getElementById('cancelBusinessBtn').click();
+        });
+
+        function createMilestoneRow(name, date, description, type) {
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-secondary-50 transition-fast';
+            
+            const usageCount = Math.floor(Math.random() * 15) + 1; // Random usage count
+            const status = Math.random() > 0.7 ? 'On Track' : Math.random() > 0.5 ? 'At Risk' : 'In Progress';
+            const statusClass = status === 'On Track' ? 'status-success' : status === 'At Risk' ? 'status-error' : 'status-warning';
+            
+            row.innerHTML = `
+                <td class="py-4 px-6">
+                    <input type="checkbox" class="rounded border-light milestone-checkbox">
+                </td>
+                <td class="py-4 px-6">
+                    <div class="editable-field" data-field="name">
+                        <span class="display-text font-medium text-text-primary">${name}</span>
+                        <input type="text" class="edit-input input-field w-full hidden" value="${name}">
+                    </div>
+                </td>
+                <td class="py-4 px-6">
+                    <div class="editable-field" data-field="date">
+                        <span class="display-text text-text-secondary">${date}</span>
+                        <input type="date" class="edit-input input-field w-full hidden" value="${date}">
+                    </div>
+                </td>
+                <td class="py-4 px-6">
+                    <div class="editable-field" data-field="description">
+                        <span class="display-text text-text-secondary">${description || 'No description'}</span>
+                        <input type="text" class="edit-input input-field w-full hidden" value="${description}">
+                    </div>
+                </td>
+                <td class="py-4 px-6">
+                    <a href="capabilities_management.html?filter=${type}-milestone" class="text-primary hover:text-primary-700 font-medium">${usageCount} capabilities</a>
+                </td>
+                <td class="py-4 px-6">
+                    <span class="${statusClass} px-3 py-1 rounded-full text-sm font-medium">${status}</span>
+                </td>
+                <td class="py-4 px-6">
+                    <div class="flex items-center space-x-2">
+                        <button class="edit-btn p-1 text-text-secondary hover:text-primary transition-fast" title="Edit">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </button>
+                        <button class="save-btn p-1 text-accent hover:text-accent-700 transition-fast hidden" title="Save">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </button>
+                        <button class="cancel-btn p-1 text-text-secondary hover:text-error transition-fast hidden" title="Cancel">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                        <button class="delete-btn p-1 text-text-secondary hover:text-error transition-fast" title="Delete">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </td>
+            `;
+            
+            // Bind events to new row
+            bindRowEvents(row);
+            
+            return row;
+        }
+
+        function showSuccessMessage(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Enhanced inline editing functionality
+        function bindRowEvents(row) {
+            const editBtn = row.querySelector('.edit-btn');
+            const saveBtn = row.querySelector('.save-btn');
+            const cancelBtn = row.querySelector('.cancel-btn');
+            const deleteBtn = row.querySelector('.delete-btn');
+            const checkbox = row.querySelector('.milestone-checkbox');
+            
+            if (editBtn) {
+                editBtn.addEventListener('click', function() {
+                    const editableFields = row.querySelectorAll('.editable-field');
+                    
+                    editableFields.forEach(field => {
+                        const displayText = field.querySelector('.display-text');
+                        const editInput = field.querySelector('.edit-input');
+                        
+                        displayText.classList.add('hidden');
+                        editInput.classList.remove('hidden');
+                        editInput.focus();
+                    });
+                    
+                    // Toggle buttons
+                    this.classList.add('hidden');
+                    saveBtn.classList.remove('hidden');
+                    cancelBtn.classList.remove('hidden');
+                });
+            }
+            
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function() {
+                    const editableFields = row.querySelectorAll('.editable-field');
+                    
+                    editableFields.forEach(field => {
+                        const displayText = field.querySelector('.display-text');
+                        const editInput = field.querySelector('.edit-input');
+                        
+                        displayText.textContent = editInput.value;
+                        displayText.classList.remove('hidden');
+                        editInput.classList.add('hidden');
+                    });
+                    
+                    // Toggle buttons
+                    this.classList.add('hidden');
+                    cancelBtn.classList.add('hidden');
+                    editBtn.classList.remove('hidden');
+                    
+                    showSuccessMessage('Milestone updated successfully!');
+                });
+            }
+            
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    const editableFields = row.querySelectorAll('.editable-field');
+                    
+                    editableFields.forEach(field => {
+                        const displayText = field.querySelector('.display-text');
+                        const editInput = field.querySelector('.edit-input');
+                        
+                        editInput.value = displayText.textContent;
+                        displayText.classList.remove('hidden');
+                        editInput.classList.add('hidden');
+                    });
+                    
+                    // Toggle buttons
+                    this.classList.add('hidden');
+                    saveBtn.classList.add('hidden');
+                    editBtn.classList.remove('hidden');
+                });
+            }
+            
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function() {
+                    const milestoneName = row.querySelector('.display-text').textContent;
+                    const usageCount = row.querySelector('a').textContent.split(' ')[0];
+                    
+                    milestoneToDelete = row;
+                    document.getElementById('dependencyCount').textContent = usageCount;
+                    document.getElementById('deleteModal').classList.remove('hidden');
+                });
+            }
+            
+            if (checkbox) {
+                checkbox.addEventListener('change', function() {
+                    const tabType = row.closest('.tab-content').id.includes('technical') ? 'technical' : 'business';
+                    updateBulkActions(tabType);
+                });
+            }
+        }
+
+        // Initial binding for existing rows
+        document.querySelectorAll('#technical-tab tbody tr, #business-tab tbody tr').forEach(bindRowEvents);
+
+        // Enhanced checkbox selection and bulk actions
+        function updateBulkActions(tabType) {
+            const checkboxes = document.querySelectorAll(`#${tabType}-tab .milestone-checkbox:checked`);
+            const bulkActions = document.getElementById(`${tabType}BulkActions`);
+            const selectedCount = document.getElementById(`${tabType}SelectedCount`);
+            
+            if (checkboxes.length > 0) {
+                bulkActions.classList.remove('hidden');
+                selectedCount.textContent = checkboxes.length;
+                
+                // Animate appearance
+                bulkActions.style.transform = 'translateY(-10px)';
+                bulkActions.style.opacity = '0';
+                setTimeout(() => {
+                    bulkActions.style.transform = 'translateY(0)';
+                    bulkActions.style.opacity = '1';
+                    bulkActions.style.transition = 'all 0.2s ease-out';
+                }, 10);
+            } else {
+                bulkActions.style.opacity = '0';
+                bulkActions.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    bulkActions.classList.add('hidden');
+                }, 200);
+            }
+        }
+
+        // Enhanced select all functionality
+        document.getElementById('selectAllTechnical').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('#technical-tab .milestone-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+                
+                // Add visual feedback
+                if (this.checked) {
+                    checkbox.closest('tr').classList.add('bg-blue-50');
+                } else {
+                    checkbox.closest('tr').classList.remove('bg-blue-50');
+                }
+            });
+            updateBulkActions('technical');
+        });
+
+        document.getElementById('selectAllBusiness').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('#business-tab .milestone-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+                
+                // Add visual feedback
+                if (this.checked) {
+                    checkbox.closest('tr').classList.add('bg-blue-50');
+                } else {
+                    checkbox.closest('tr').classList.remove('bg-blue-50');
+                }
+            });
+            updateBulkActions('business');
+        });
+
+        // Enhanced delete confirmation modal
+        let milestoneToDelete = null;
+
+        document.getElementById('cancelDeleteBtn').addEventListener('click', function() {
+            document.getElementById('deleteModal').classList.add('hidden');
+            milestoneToDelete = null;
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (milestoneToDelete) {
+                // Animate removal
+                milestoneToDelete.style.transform = 'translateX(100%)';
+                milestoneToDelete.style.opacity = '0';
+                milestoneToDelete.style.transition = 'all 0.3s ease-out';
+                
+                setTimeout(() => {
+                    milestoneToDelete.remove();
+                    showSuccessMessage('Milestone deleted successfully!');
+                }, 300);
+                
+                document.getElementById('deleteModal').classList.add('hidden');
+                milestoneToDelete = null;
+            }
+        });
+
+        // Enhanced search functionality
+        document.getElementById('technicalSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#technical-tab tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                    row.style.opacity = '1';
+                } else {
+                    row.style.opacity = '0';
+                    setTimeout(() => {
+                        if (!text.includes(searchTerm)) {
+                            row.style.display = 'none';
+                        }
+                    }, 150);
+                }
+            });
+        });
+
+        document.getElementById('businessSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#business-tab tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                    row.style.opacity = '1';
+                } else {
+                    row.style.opacity = '0';
+                    setTimeout(() => {
+                        if (!text.includes(searchTerm)) {
+                            row.style.display = 'none';
+                        }
+                    }, 150);
+                }
+            });
+        });
+
+        // Enhanced export functionality
+        document.getElementById('exportTechnicalBtn').addEventListener('click', function() {
+            exportMilestones('technical');
+        });
+
+        document.getElementById('exportBusinessBtn').addEventListener('click', function() {
+            exportMilestones('business');
+        });
+
+        function exportMilestones(type) {
+            const rows = document.querySelectorAll(`#${type}-tab tbody tr:not([style*="display: none"])`);
+            const data = [];
+            
+            // Add headers
+            data.push(['Milestone Name', 'Target Date', 'Description', 'Usage Count', 'Status']);
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowData = [
+                    cells[1].querySelector('.display-text').textContent,
+                    cells[2].querySelector('.display-text').textContent,
+                    cells[3].querySelector('.display-text').textContent,
+                    cells[4].textContent.trim(),
+                    cells[5].textContent.trim()
+                ];
+                data.push(rowData);
+            });
+            
+            // Convert to CSV
+            const csv = data.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+            
+            // Create calendar format for calendar export
+            const calendarData = rows.map(row => {
+                const cells = row.querySelectorAll('td');
+                const name = cells[1].querySelector('.display-text').textContent;
+                const date = cells[2].querySelector('.display-text').textContent;
+                return `${date},${name}`;
+            }).join('\n');
+            
+            // Download
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${type}_milestones_calendar_` + new Date().toISOString().split('T')[0] + '.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            showSuccessMessage(`${type.charAt(0).toUpperCase() + type.slice(1)} milestones exported successfully!`);
+        }
+
+        // Enhanced bulk operations
+        document.getElementById('bulkUpdateDatesBtn')?.addEventListener('click', function() {
+            const selectedRows = document.querySelectorAll('#technical-tab .milestone-checkbox:checked');
+            if (selectedRows.length === 0) {
+                alert('Please select milestones to update.');
+                return;
+            }
+            
+            const newDate = prompt('Enter new target date (YYYY-MM-DD):');
+            if (newDate && isValidDate(newDate)) {
+                selectedRows.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const dateCell = row.querySelector('[data-field="date"] .display-text');
+                    const dateInput = row.querySelector('[data-field="date"] .edit-input');
+                    
+                    dateCell.textContent = newDate;
+                    dateInput.value = newDate;
+                });
+                
+                showSuccessMessage(`Updated ${selectedRows.length} milestone dates!`);
+                updateBulkActions('technical');
+            }
+        });
+
+        function isValidDate(dateString) {
+            const date = new Date(dateString);
+            return date instanceof Date && !isNaN(date);
+        }
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + N for new milestone
+            if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                e.preventDefault();
+                const activeTab = document.querySelector('.tab-content:not(.hidden)');
+                if (activeTab.id === 'technical-tab') {
+                    document.getElementById('addTechnicalBtn').click();
+                } else {
+                    document.getElementById('addBusinessBtn').click();
+                }
+            }
+            
+            // Escape to close modals/forms
+            if (e.key === 'Escape') {
+                document.getElementById('deleteModal').classList.add('hidden');
+                document.getElementById('technicalForm').classList.add('hidden');
+                document.getElementById('businessForm').classList.add('hidden');
+            }
+        });
+
+        // Initialize tooltips and enhanced interactions
+        document.querySelectorAll('[title]').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.15s ease-out';
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+<script id="dhws-elementInspector" src="../public/dhws-web-inspector.js"></script>
+<script id="dhws-errorTracker" src="../public/dhws-error-tracker.js"></script>
+</body>
+</html>

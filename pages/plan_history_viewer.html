@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan History Viewer - IT Project Timeline Tracker</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Global Header Navigation -->
+    <header class="bg-surface border-b border-light shadow-card fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none"/>
+                    </svg>
+                    <h1 class="text-xl font-semibold text-text-primary">IT Project Timeline Tracker</h1>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="dashboard.html" class="text-text-secondary hover:text-primary transition-fast">Dashboard</a>
+                    <a href="capabilities_management.html" class="text-primary font-medium border-b-2 border-primary pb-1">Capabilities</a>
+                    <a href="gantt_view.html" class="text-text-secondary hover:text-primary transition-fast">Plans</a>
+                    <a href="milestone_management.html" class="text-text-secondary hover:text-primary transition-fast">Milestone Management</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded-lg hover:bg-secondary-100 transition-fast" id="mobileMenuBtn">
+                    <svg class="w-6 h-6 text-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div class="md:hidden mt-4 pb-4 border-t border-light hidden" id="mobileMenu">
+                <nav class="flex flex-col space-y-3 pt-4">
+                    <a href="dashboard.html" class="text-text-secondary hover:text-primary transition-fast px-2 py-1">Dashboard</a>
+                    <a href="capabilities_management.html" class="text-primary font-medium px-2 py-1">Capabilities</a>
+                    <a href="gantt_view.html" class="text-text-secondary hover:text-primary transition-fast px-2 py-1">Plans</a>
+                    <a href="milestone_management.html" class="text-text-secondary hover:text-primary transition-fast px-2 py-1">Milestone Management</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20 px-6 max-w-7xl mx-auto">
+        <!-- Breadcrumb Navigation -->
+        <nav class="mb-6" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2 text-sm">
+                <li>
+                    <a href="capabilities_management.html" class="text-primary hover:text-primary-700 transition-fast">Capabilities</a>
+                </li>
+                <li class="text-text-secondary">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </li>
+                <li>
+                    <a href="capabilities_management.html" class="text-primary hover:text-primary-700 transition-fast">Customer Portal Enhancement</a>
+                </li>
+                <li class="text-text-secondary">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </li>
+                <li class="text-text-secondary font-medium">Plan History</li>
+            </ol>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-3xl font-semibold text-text-primary mb-2">Plan History</h2>
+                    <p class="text-text-secondary">Complete version history for Customer Portal Enhancement capability</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="btn-secondary" id="exportHistoryBtn">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Export History
+                    </button>
+                    <button class="btn-primary" id="compareVersionsBtn" disabled>
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                        </svg>
+                        Compare Selected
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Left Sidebar - Filters -->
+            <div class="lg:col-span-3">
+                <div class="card p-6 sticky top-24">
+                    <h3 class="text-lg font-semibold text-text-primary mb-6">Filters & Search</h3>
+
+                    <!-- Search -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-text-primary mb-2">Search Changes</label>
+                        <div class="relative">
+                            <input type="text" placeholder="Search versions, changes..." class="input-field w-full pl-10" id="searchInput">
+                            <svg class="w-4 h-4 text-text-secondary absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Date Range Filter -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-text-primary mb-2">Date Range</label>
+                        <div class="space-y-3">
+                            <input type="date" class="input-field w-full" value="2024-01-01" id="startDate">
+                            <input type="date" class="input-field w-full" value="2025-01-15" id="endDate">
+                        </div>
+                    </div>
+
+                    <!-- User Filter -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-text-primary mb-2">Created By</label>
+                        <select class="input-field w-full" id="userFilter">
+                            <option value="">All Users</option>
+                            <option value="sarah.chen">Sarah Chen</option>
+                            <option value="mike.johnson">Mike Johnson</option>
+                            <option value="alex.rodriguez">Alex Rodriguez</option>
+                            <option value="emma.davis">Emma Davis</option>
+                        </select>
+                    </div>
+
+                    <!-- Change Type Filter -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-text-primary mb-2">Change Type</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2" checked>
+                                <span class="text-sm text-text-primary">Date Changes</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2" checked>
+                                <span class="text-sm text-text-primary">Milestone Updates</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2" checked>
+                                <span class="text-sm text-text-primary">Status Changes</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2" checked>
+                                <span class="text-sm text-text-primary">Plan Creation</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Reset Filters -->
+                    <button class="btn-secondary w-full" id="resetFiltersBtn">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Reset Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content Area - Version History -->
+            <div class="lg:col-span-9">
+                <!-- Version Selection Notice -->
+                <div class="mb-6 p-4 bg-secondary-50 border border-secondary-200 rounded-lg hidden" id="selectionNotice">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="text-sm font-medium text-text-primary">Select 2 versions to compare</span>
+                            <span class="text-sm text-text-secondary" id="selectionCount">(0 selected)</span>
+                        </div>
+                        <button class="text-text-secondary hover:text-text-primary transition-fast" id="clearSelectionBtn">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Version Timeline -->
+                <div class="space-y-6" id="versionTimeline">
+                    <!-- Version 4 - Current -->
+                    <div class="card p-6 border-2 border-accent bg-accent-50 hover-lift version-card" data-version="4">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-4">
+                                <input type="checkbox" class="version-checkbox" data-version="4">
+                                <div>
+                                    <div class="flex items-center space-x-3">
+                                        <h3 class="text-lg font-semibold text-text-primary">Version 4</h3>
+                                        <span class="status-success px-3 py-1 rounded-full text-sm font-medium">Current Version</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4 mt-1 text-sm text-text-secondary">
+                                        <span>Created: Jan 15, 2025 at 2:30 PM</span>
+                                        <span>By: Sarah Chen</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="btn-secondary text-sm view-plan-btn" data-version="4">View Full Plan</button>
+                                <button class="p-2 text-text-secondary hover:text-text-primary transition-fast expand-btn" data-version="4">
+                                    <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-text-primary mb-2">Changes from Version 3:</h4>
+                            <ul class="text-sm text-text-secondary space-y-1">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-warning rounded-full"></div>
+                                    <span>UAT End Date moved from Jan 20 to Jan 25, 2025</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span>Business Milestone updated to "Customer Acceptance Complete"</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Expandable Details -->
+                        <div class="version-details hidden" data-version="4">
+                            <div class="border-t border-light pt-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h5 class="text-sm font-medium text-text-primary mb-3">Implementation Plan Dates</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Development:</span>
+                                                <span class="text-text-primary">Dec 1 - Dec 20, 2024</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">CST:</span>
+                                                <span class="text-text-primary">Dec 21 - Jan 10, 2025</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">UAT:</span>
+                                                <span class="text-text-primary">Jan 11 - Jan 25, 2025</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-sm font-medium text-text-primary mb-3">Milestones</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Technical:</span>
+                                                <span class="text-text-primary">System Integration Complete</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Business:</span>
+                                                <span class="text-text-primary">Customer Acceptance Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 p-3 bg-secondary-50 rounded-lg">
+                                    <p class="text-sm text-text-secondary">
+                                        <strong>Change Reason:</strong> Extended UAT timeline based on stakeholder feedback and additional testing requirements identified during CST phase.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Version 3 -->
+                    <div class="card p-6 hover-lift version-card" data-version="3">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-4">
+                                <input type="checkbox" class="version-checkbox" data-version="3">
+                                <div>
+                                    <div class="flex items-center space-x-3">
+                                        <h3 class="text-lg font-semibold text-text-primary">Version 3</h3>
+                                    </div>
+                                    <div class="flex items-center space-x-4 mt-1 text-sm text-text-secondary">
+                                        <span>Created: Jan 8, 2025 at 11:15 AM</span>
+                                        <span>By: Mike Johnson</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="btn-secondary text-sm view-plan-btn" data-version="3">View Full Plan</button>
+                                <button class="btn-secondary text-sm revert-btn" data-version="3">Revert to This</button>
+                                <button class="p-2 text-text-secondary hover:text-text-primary transition-fast expand-btn" data-version="3">
+                                    <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-text-primary mb-2">Changes from Version 2:</h4>
+                            <ul class="text-sm text-text-secondary space-y-1">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-warning rounded-full"></div>
+                                    <span>CST End Date moved from Jan 5 to Jan 10, 2025</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-warning rounded-full"></div>
+                                    <span>UAT Start Date moved from Jan 6 to Jan 11, 2025</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Expandable Details -->
+                        <div class="version-details hidden" data-version="3">
+                            <div class="border-t border-light pt-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h5 class="text-sm font-medium text-text-primary mb-3">Implementation Plan Dates</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Development:</span>
+                                                <span class="text-text-primary">Dec 1 - Dec 20, 2024</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">CST:</span>
+                                                <span class="text-text-primary">Dec 21 - Jan 10, 2025</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">UAT:</span>
+                                                <span class="text-text-primary">Jan 11 - Jan 20, 2025</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-sm font-medium text-text-primary mb-3">Milestones</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Technical:</span>
+                                                <span class="text-text-primary">System Integration Complete</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Business:</span>
+                                                <span class="text-text-primary">User Acceptance Achieved</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 p-3 bg-secondary-50 rounded-lg">
+                                    <p class="text-sm text-text-secondary">
+                                        <strong>Change Reason:</strong> Additional CST time required due to integration complexity with legacy systems.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Version 2 -->
+                    <div class="card p-6 hover-lift version-card" data-version="2">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-4">
+                                <input type="checkbox" class="version-checkbox" data-version="2">
+                                <div>
+                                    <div class="flex items-center space-x-3">
+                                        <h3 class="text-lg font-semibold text-text-primary">Version 2</h3>
+                                    </div>
+                                    <div class="flex items-center space-x-4 mt-1 text-sm text-text-secondary">
+                                        <span>Created: Dec 15, 2024 at 3:45 PM</span>
+                                        <span>By: Alex Rodriguez</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="btn-secondary text-sm view-plan-btn" data-version="2">View Full Plan</button>
+                                <button class="btn-secondary text-sm revert-btn" data-version="2">Revert to This</button>
+                                <button class="p-2 text-text-secondary hover:text-text-primary transition-fast expand-btn" data-version="2">
+                                    <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-text-primary mb-2">Changes from Version 1:</h4>
+                            <ul class="text-sm text-text-secondary space-y-1">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span>Technical Milestone updated to "System Integration Complete"</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                    <span>Status changed from "Planning" to "In Progress"</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Expandable Details -->
+                        <div class="version-details hidden" data-version="2">
+                            <div class="border-t border-light pt-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h5 class="text-sm font-medium text-text-primary mb-3">Implementation Plan Dates</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Development:</span>
+                                                <span class="text-text-primary">Dec 1 - Dec 20, 2024</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">CST:</span>
+                                                <span class="text-text-primary">Dec 21 - Jan 5, 2025</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">UAT:</span>
+                                                <span class="text-text-primary">Jan 6 - Jan 20, 2025</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-sm font-medium text-text-primary mb-3">Milestones</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Technical:</span>
+                                                <span class="text-text-primary">System Integration Complete</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Business:</span>
+                                                <span class="text-text-primary">User Acceptance Achieved</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 p-3 bg-secondary-50 rounded-lg">
+                                    <p class="text-sm text-text-secondary">
+                                        <strong>Change Reason:</strong> Updated milestone definitions to align with project governance standards and initiated development phase.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Version 1 - Initial -->
+                    <div class="card p-6 hover-lift version-card" data-version="1">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-4">
+                                <input type="checkbox" class="version-checkbox" data-version="1">
+                                <div>
+                                    <div class="flex items-center space-x-3">
+                                        <h3 class="text-lg font-semibold text-text-primary">Version 1</h3>
+                                        <span class="status-warning px-3 py-1 rounded-full text-sm font-medium">Initial Version</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4 mt-1 text-sm text-text-secondary">
+                                        <span>Created: Nov 28, 2024 at 9:00 AM</span>
+                                        <span>By: Emma Davis</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="btn-secondary text-sm view-plan-btn" data-version="1">View Full Plan</button>
+                                <button class="btn-secondary text-sm revert-btn" data-version="1">Revert to This</button>
+                                <button class="p-2 text-text-secondary hover:text-text-primary transition-fast expand-btn" data-version="1">
+                                    <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-text-primary mb-2">Initial Plan Creation:</h4>
+                            <ul class="text-sm text-text-secondary space-y-1">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                    <span>Implementation plan created with initial timeline</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                    <span>Milestone associations established</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Expandable Details -->
+                        <div class="version-details hidden" data-version="1">
+                            <div class="border-t border-light pt-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h5 class="text-sm font-medium text-text-primary mb-3">Implementation Plan Dates</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Development:</span>
+                                                <span class="text-text-primary">Dec 1 - Dec 20, 2024</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">CST:</span>
+                                                <span class="text-text-primary">Dec 21 - Jan 5, 2025</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">UAT:</span>
+                                                <span class="text-text-primary">Jan 6 - Jan 20, 2025</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-sm font-medium text-text-primary mb-3">Milestones</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Technical:</span>
+                                                <span class="text-text-primary">Development Complete</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span class="text-text-secondary">Business:</span>
+                                                <span class="text-text-primary">User Acceptance Achieved</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 p-3 bg-secondary-50 rounded-lg">
+                                    <p class="text-sm text-text-secondary">
+                                        <strong>Change Reason:</strong> Initial implementation plan created based on requirements analysis and stakeholder input.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Version Comparison Modal -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden" id="comparisonModal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-surface rounded-lg shadow-modal max-w-6xl w-full max-h-[90vh] overflow-hidden">
+                <div class="flex items-center justify-between p-6 border-b border-light">
+                    <h3 class="text-xl font-semibold text-text-primary">Version Comparison</h3>
+                    <button class="text-text-secondary hover:text-text-primary transition-fast" id="closeComparisonModal">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="comparisonContent">
+                        <!-- Comparison content will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plan Detail Modal -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden" id="planDetailModal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-surface rounded-lg shadow-modal max-w-4xl w-full max-h-[90vh] overflow-hidden">
+                <div class="flex items-center justify-between p-6 border-b border-light">
+                    <h3 class="text-xl font-semibold text-text-primary">Plan Details</h3>
+                    <button class="text-text-secondary hover:text-text-primary transition-fast" id="closePlanDetailModal">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]" id="planDetailContent">
+                    <!-- Plan detail content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revert Confirmation Modal -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden" id="revertModal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-surface rounded-lg shadow-modal max-w-md w-full">
+                <div class="p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-warning-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-text-primary">Confirm Revert</h3>
+                    </div>
+                    <p class="text-text-secondary mb-6">
+                        Are you sure you want to revert to <span id="revertVersionText">Version X</span>? This will create a new version based on the selected plan and cannot be undone.
+                    </p>
+                    <div class="flex items-center space-x-3">
+                        <button class="btn-primary" id="confirmRevertBtn">Revert Plan</button>
+                        <button class="btn-secondary" id="cancelRevertBtn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Version selection management
+        let selectedVersions = [];
+        const maxSelections = 2;
+
+        // Handle version checkbox changes
+        document.querySelectorAll('.version-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const version = this.dataset.version;
+                
+                if (this.checked) {
+                    if (selectedVersions.length < maxSelections) {
+                        selectedVersions.push(version);
+                    } else {
+                        this.checked = false;
+                        return;
+                    }
+                } else {
+                    selectedVersions = selectedVersions.filter(v => v !== version);
+                }
+                
+                updateSelectionUI();
+            });
+        });
+
+        function updateSelectionUI() {
+            const selectionNotice = document.getElementById('selectionNotice');
+            const selectionCount = document.getElementById('selectionCount');
+            const compareBtn = document.getElementById('compareVersionsBtn');
+            
+            if (selectedVersions.length > 0) {
+                selectionNotice.classList.remove('hidden');
+                selectionCount.textContent = `(${selectedVersions.length} selected)`;
+                compareBtn.disabled = selectedVersions.length !== 2;
+                
+                if (selectedVersions.length === 2) {
+                    compareBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    compareBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            } else {
+                selectionNotice.classList.add('hidden');
+                compareBtn.disabled = true;
+                compareBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Clear selection
+        document.getElementById('clearSelectionBtn').addEventListener('click', function() {
+            selectedVersions = [];
+            document.querySelectorAll('.version-checkbox').forEach(cb => cb.checked = false);
+            updateSelectionUI();
+        });
+
+        // Expand/collapse version details
+        document.querySelectorAll('.expand-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const version = this.dataset.version;
+                const details = document.querySelector(`.version-details[data-version="${version}"]`);
+                const icon = this.querySelector('svg');
+                
+                details.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+
+        // Version comparison
+        document.getElementById('compareVersionsBtn').addEventListener('click', function() {
+            if (selectedVersions.length === 2) {
+                showVersionComparison(selectedVersions[0], selectedVersions[1]);
+            }
+        });
+
+        function showVersionComparison(version1, version2) {
+            const modal = document.getElementById('comparisonModal');
+            const content = document.getElementById('comparisonContent');
+            
+            // Mock comparison data
+            const comparisonData = {
+                [version1]: {
+                    version: version1,
+                    createdDate: getVersionDate(version1),
+                    createdBy: getVersionUser(version1),
+                    devStart: 'Dec 1, 2024',
+                    devEnd: 'Dec 20, 2024',
+                    cstStart: 'Dec 21, 2024',
+                    cstEnd: version1 === '4' ? 'Jan 10, 2025' : 'Jan 5, 2025',
+                    uatStart: version1 === '4' ? 'Jan 11, 2025' : 'Jan 6, 2025',
+                    uatEnd: version1 === '4' ? 'Jan 25, 2025' : 'Jan 20, 2025',
+                    techMilestone: version1 === '1' ? 'Development Complete' : 'System Integration Complete',
+                    bizMilestone: version1 === '4' ? 'Customer Acceptance Complete' : 'User Acceptance Achieved'
+                },
+                [version2]: {
+                    version: version2,
+                    createdDate: getVersionDate(version2),
+                    createdBy: getVersionUser(version2),
+                    devStart: 'Dec 1, 2024',
+                    devEnd: 'Dec 20, 2024',
+                    cstStart: 'Dec 21, 2024',
+                    cstEnd: version2 === '4' ? 'Jan 10, 2025' : 'Jan 5, 2025',
+                    uatStart: version2 === '4' ? 'Jan 11, 2025' : 'Jan 6, 2025',
+                    uatEnd: version2 === '4' ? 'Jan 25, 2025' : 'Jan 20, 2025',
+                    techMilestone: version2 === '1' ? 'Development Complete' : 'System Integration Complete',
+                    bizMilestone: version2 === '4' ? 'Customer Acceptance Complete' : 'User Acceptance Achieved'
+                }
+            };
+            
+            content.innerHTML = generateComparisonHTML(comparisonData[version1], comparisonData[version2]);
+            modal.classList.remove('hidden');
+        }
+
+        function generateComparisonHTML(v1, v2) {
+            return `
+                <div class="space-y-6">
+                    <div class="text-center">
+                        <h4 class="text-lg font-semibold text-text-primary">Version ${v1.version}</h4>
+                        <p class="text-sm text-text-secondary">${v1.createdDate} by ${v1.createdBy}</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="card p-4">
+                            <h5 class="font-medium text-text-primary mb-3">Implementation Dates</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">Development:</span>
+                                    <span class="text-text-primary">${v1.devStart} - ${v1.devEnd}</span>
+                                </div>
+                                <div class="flex justify-between ${v1.cstEnd !== v2.cstEnd ? 'bg-warning-50 px-2 py-1 rounded' : ''}">
+                                    <span class="text-text-secondary">CST:</span>
+                                    <span class="text-text-primary">${v1.cstStart} - ${v1.cstEnd}</span>
+                                </div>
+                                <div class="flex justify-between ${v1.uatEnd !== v2.uatEnd ? 'bg-warning-50 px-2 py-1 rounded' : ''}">
+                                    <span class="text-text-secondary">UAT:</span>
+                                    <span class="text-text-primary">${v1.uatStart} - ${v1.uatEnd}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card p-4">
+                            <h5 class="font-medium text-text-primary mb-3">Milestones</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between ${v1.techMilestone !== v2.techMilestone ? 'bg-primary-50 px-2 py-1 rounded' : ''}">
+                                    <span class="text-text-secondary">Technical:</span>
+                                    <span class="text-text-primary">${v1.techMilestone}</span>
+                                </div>
+                                <div class="flex justify-between ${v1.bizMilestone !== v2.bizMilestone ? 'bg-primary-50 px-2 py-1 rounded' : ''}">
+                                    <span class="text-text-secondary">Business:</span>
+                                    <span class="text-text-primary">${v1.bizMilestone}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="text-center">
+                        <h4 class="text-lg font-semibold text-text-primary">Version ${v2.version}</h4>
+                        <p class="text-sm text-text-secondary">${v2.createdDate} by ${v2.createdBy}</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="card p-4">
+                            <h5 class="font-medium text-text-primary mb-3">Implementation Dates</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">Development:</span>
+                                    <span class="text-text-primary">${v2.devStart} - ${v2.devEnd}</span>
+                                </div>
+                                <div class="flex justify-between ${v1.cstEnd !== v2.cstEnd ? 'bg-warning-50 px-2 py-1 rounded' : ''}">
+                                    <span class="text-text-secondary">CST:</span>
+                                    <span class="text-text-primary">${v2.cstStart} - ${v2.cstEnd}</span>
+                                </div>
+                                <div class="flex justify-between ${v1.uatEnd !== v2.uatEnd ? 'bg-warning-50 px-2 py-1 rounded' : ''}">
+                                    <span class="text-text-secondary">UAT:</span>
+                                    <span class="text-text-primary">${v2.uatStart} - ${v2.uatEnd}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card p-4">
+                            <h5 class="font-medium text-text-primary mb-3">Milestones</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between ${v1.techMilestone !== v2.techMilestone ? 'bg-primary-50 px-2 py-1 rounded' : ''}">
+                                    <span class="text-text-secondary">Technical:</span>
+                                    <span class="text-text-primary">${v2.techMilestone}</span>
+                                </div>
+                                <div class="flex justify-between ${v1.bizMilestone !== v2.bizMilestone ? 'bg-primary-50 px-2 py-1 rounded' : ''}">
+                                    <span class="text-text-secondary">Business:</span>
+                                    <span class="text-text-primary">${v2.bizMilestone}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper functions
+        function getVersionDate(version) {
+            const dates = {
+                '1': 'Nov 28, 2024 at 9:00 AM',
+                '2': 'Dec 15, 2024 at 3:45 PM',
+                '3': 'Jan 8, 2025 at 11:15 AM',
+                '4': 'Jan 15, 2025 at 2:30 PM'
+            };
+            return dates[version];
+        }
+
+        function getVersionUser(version) {
+            const users = {
+                '1': 'Emma Davis',
+                '2': 'Alex Rodriguez',
+                '3': 'Mike Johnson',
+                '4': 'Sarah Chen'
+            };
+            return users[version];
+        }
+
+        // Modal controls
+        document.getElementById('closeComparisonModal').addEventListener('click', function() {
+            document.getElementById('comparisonModal').classList.add('hidden');
+        });
+
+        document.getElementById('closePlanDetailModal').addEventListener('click', function() {
+            document.getElementById('planDetailModal').classList.add('hidden');
+        });
+
+        // View plan details
+        document.querySelectorAll('.view-plan-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const version = this.dataset.version;
+                showPlanDetails(version);
+            });
+        });
+
+        function showPlanDetails(version) {
+            const modal = document.getElementById('planDetailModal');
+            const content = document.getElementById('planDetailContent');
+            
+            // Mock plan detail data
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xl font-semibold text-text-primary">Version ${version} - Full Plan Details</h4>
+                        <span class="status-${version === '4' ? 'success' : 'warning'} px-3 py-1 rounded-full text-sm font-medium">
+                            ${version === '4' ? 'Current Version' : 'Historical Version'}
+                        </span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="card p-4">
+                            <h5 class="font-medium text-text-primary mb-3">Aspirational Plan</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">Requirements:</span>
+                                    <span class="text-text-primary">Oct 1 - Oct 15, 2024</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">Design:</span>
+                                    <span class="text-text-primary">Oct 16 - Nov 15, 2024</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">Development:</span>
+                                    <span class="text-text-primary">Nov 16 - Dec 15, 2024</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">CST:</span>
+                                    <span class="text-text-primary">Dec 16 - Dec 31, 2024</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">UAT:</span>
+                                    <span class="text-text-primary">Jan 1 - Jan 15, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card p-4">
+                            <h5 class="font-medium text-text-primary mb-3">Implementation Plan</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">Development:</span>
+                                    <span class="text-text-primary">Dec 1 - Dec 20, 2024</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">CST:</span>
+                                    <span class="text-text-primary">Dec 21 - ${version === '4' ? 'Jan 10' : 'Jan 5'}, 2025</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">UAT:</span>
+                                    <span class="text-text-primary">${version === '4' ? 'Jan 11 - Jan 25' : 'Jan 6 - Jan 20'}, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-4">
+                        <h5 class="font-medium text-text-primary mb-3">Capability Details</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-text-secondary">Workstream Lead:</span>
+                                <span class="text-text-primary ml-2">Sarah Chen</span>
+                            </div>
+                            <div>
+                                <span class="text-text-secondary">SME:</span>
+                                <span class="text-text-primary ml-2">Mike Johnson</span>
+                            </div>
+                            <div>
+                                <span class="text-text-secondary">Business Analyst:</span>
+                                <span class="text-text-primary ml-2">Alex Rodriguez</span>
+                            </div>
+                            <div>
+                                <span class="text-text-secondary">Status:</span>
+                                <span class="text-text-primary ml-2">${version === '1' ? 'Planning' : 'In Progress'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-4">
+                        <h5 class="font-medium text-text-primary mb-3">Notes</h5>
+                        <p class="text-sm text-text-secondary">
+                            Customer Portal Enhancement capability focuses on improving user experience and adding new self-service features. 
+                            This includes responsive design updates, new dashboard functionality, and integration with backend services.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        });
+
+        // Revert functionality
+        let revertToVersion = null;
+
+        document.querySelectorAll('.revert-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                revertToVersion = this.dataset.version;
+                document.getElementById('revertVersionText').textContent = `Version ${revertToVersion}`;
+                document.getElementById('revertModal').classList.remove('hidden');
+            });
+        });
+
+        document.getElementById('confirmRevertBtn').addEventListener('click', function() {
+            // Simulate revert action
+            alert(`Plan reverted to Version ${revertToVersion}. A new version has been created.`);
+            document.getElementById('revertModal').classList.add('hidden');
+            // In a real app, this would refresh the page or update the timeline
+        });
+
+        document.getElementById('cancelRevertBtn').addEventListener('click', function() {
+            document.getElementById('revertModal').classList.add('hidden');
+            revertToVersion = null;
+        });
+
+        // Filter functionality
+        document.getElementById('resetFiltersBtn').addEventListener('click', function() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('startDate').value = '2024-01-01';
+            document.getElementById('endDate').value = '2025-01-15';
+            document.getElementById('userFilter').value = '';
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+        });
+
+        // Export functionality
+        document.getElementById('exportHistoryBtn').addEventListener('click', function() {
+            alert('Exporting plan history report...');
+            // In a real app, this would generate and download a report
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            document.querySelectorAll('.version-card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize UI
+        updateSelectionUI();
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+<script id="dhws-elementInspector" src="../public/dhws-web-inspector.js"></script>
+<script id="dhws-errorTracker" src="../public/dhws-error-tracker.js"></script>
+</body>
+</html>
