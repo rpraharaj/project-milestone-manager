@@ -24,11 +24,18 @@ npm install
 yarn install
 ```
 
-2. Start the development server:
+2. Start the CSS watcher:
 ```bash
 npm run dev
 # or
 yarn dev
+```
+
+3. Run the static server:
+```bash
+npm start
+# or
+yarn start
 ```
 
 ## 📁 Project Structure
