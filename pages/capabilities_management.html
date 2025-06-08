@@ -799,67 +799,106 @@ function filterTable() {
 
 // Enhanced action buttons functionality
 
-// Edit functionality
-document.querySelectorAll('button[title="Edit"]').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const row = this.closest('tr');
-        const capabilityName = row.querySelector('td:nth-child(2) .font-medium').textContent;
-        
-        // Create edit modal or inline editing
-        alert(`Edit functionality for: ${capabilityName}`);
-        // You can implement a modal or inline editing here
-        
-        this.style.opacity = '0.6';
-        setTimeout(() => {
-            this.style.opacity = '1';
-        }, 500);
-    });
-});
+function openEditModal(row) {
+    const capabilityName = row.querySelector('td:nth-child(2) .font-medium').textContent;
+    const workstream = row.querySelector('td:nth-child(2) .text-text-secondary').textContent;
+    const workstreamLead = row.querySelector('td:nth-child(3) .text-sm').textContent;
+    const sme = row.querySelector('td:nth-child(4)').textContent.trim();
+    const ba = row.querySelector('td:nth-child(5)').textContent.trim();
+    const techMilestone = row.querySelector('td:nth-child(6) .text-sm').textContent;
+    const techDate = row.querySelector('td:nth-child(6) .text-xs').textContent;
+    const busMilestone = row.querySelector('td:nth-child(7) .text-sm').textContent;
+    const busDate = row.querySelector('td:nth-child(7) .text-xs').textContent;
+    const status = row.querySelector('td:nth-child(8) span').textContent;
 
-// Duplicate functionality
-document.querySelectorAll('button[title="Duplicate"]').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const row = this.closest('tr');
-        const capabilityName = row.querySelector('td:nth-child(2) .font-medium').textContent;
-        
-        if (confirm(`Create a copy of "${capabilityName}"?`)) {
-            // Clone the row and append it
-            const newRow = row.cloneNode(true);
-            const newName = newRow.querySelector('td:nth-child(2) .font-medium');
-            newName.textContent = `${capabilityName} (Copy)`;
-            
-            // Reset checkbox
-            newRow.querySelector('.capability-checkbox').checked = false;
-            
-            // Add to table
-            row.parentNode.appendChild(newRow);
-            
-            // Re-bind events for new row
-            bindRowEvents(newRow);
-        }
-        
-        this.style.opacity = '0.6';
-        setTimeout(() => {
-            this.style.opacity = '1';
-        }, 500);
-    });
-});
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    modal.innerHTML = `
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl">
+            <h3 class="text-xl font-semibold mb-4">Edit Capability</h3>
+            <form id="editForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Capability Name</label>
+                        <input name="capName" type="text" value="${capabilityName}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Workstream</label>
+                        <input name="workstream" type="text" value="${workstream}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Workstream Lead</label>
+                        <input name="workstreamLead" type="text" value="${workstreamLead}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">SME</label>
+                        <input name="sme" type="text" value="${sme}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">BA</label>
+                        <input name="ba" type="text" value="${ba}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Status</label>
+                        <select name="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                            <option ${status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                            <option ${status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                            <option ${status === 'Completed' ? 'selected' : ''}>Completed</option>
+                            <option ${status === 'On Hold' ? 'selected' : ''}>On Hold</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Technical Milestone</label>
+                        <input name="techMilestone" type="text" value="${techMilestone}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                        <input name="techDate" type="date" value="${techDate}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Business Milestone</label>
+                        <input name="busMilestone" type="text" value="${busMilestone}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                        <input name="busDate" type="date" value="${busDate}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" class="btn-secondary" id="cancelEdit">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>`;
+    document.body.appendChild(modal);
 
-// Delete functionality
-document.querySelectorAll('button[title="Delete"]').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const row = this.closest('tr');
-        const capabilityName = row.querySelector('td:nth-child(2) .font-medium').textContent;
-        
-        if (confirm(`Are you sure you want to delete "${capabilityName}"? This action cannot be undone.`)) {
-            row.remove();
-            updateBulkActions();
+    function closeModal() {
+        modal.remove();
+        document.removeEventListener('keydown', escHandler);
+    }
+
+    function escHandler(e) {
+        if (e.key === 'Escape') {
+            closeModal();
         }
+    }
+
+    document.addEventListener('keydown', escHandler);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    modal.querySelector('#cancelEdit').addEventListener('click', closeModal);
+
+    modal.querySelector('#editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+        row.querySelector('td:nth-child(2) .font-medium').textContent = form.elements.capName.value;
+        row.querySelector('td:nth-child(2) .text-text-secondary').textContent = form.elements.workstream.value;
+        row.querySelector('td:nth-child(3) .text-sm').textContent = form.elements.workstreamLead.value;
+        row.querySelector('td:nth-child(4)').textContent = form.elements.sme.value;
+        row.querySelector('td:nth-child(5)').textContent = form.elements.ba.value;
+        row.querySelector('td:nth-child(8) span').textContent = form.elements.status.value;
+        row.querySelector('td:nth-child(6) .text-sm').textContent = form.elements.techMilestone.value;
+        row.querySelector('td:nth-child(6) .text-xs').textContent = form.elements.techDate.value;
+        row.querySelector('td:nth-child(7) .text-sm').textContent = form.elements.busMilestone.value;
+        row.querySelector('td:nth-child(7) .text-xs').textContent = form.elements.busDate.value;
+        closeModal();
     });
-});
+}
 
 // View Plans functionality (existing links work)
 // Create Plan functionality (existing links work)
@@ -1068,91 +1107,7 @@ function bindRowEvents(row) {
     if (editBtn) {
         editBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            const row = this.closest('tr');
-            const capabilityName = row.querySelector('td:nth-child(2) .font-medium').textContent;
-            const workstream = row.querySelector('td:nth-child(2) .text-text-secondary').textContent;
-            const workstreamLead = row.querySelector('td:nth-child(3) .text-sm').textContent;
-            const sme = row.querySelector('td:nth-child(4)').textContent.trim();
-            const ba = row.querySelector('td:nth-child(5)').textContent.trim();
-            const techMilestone = row.querySelector('td:nth-child(6) .text-sm').textContent;
-            const techDate = row.querySelector('td:nth-child(6) .text-xs').textContent;
-            const busMilestone = row.querySelector('td:nth-child(7) .text-sm').textContent;
-            const busDate = row.querySelector('td:nth-child(7) .text-xs').textContent;
-            const status = row.querySelector('td:nth-child(8) span').textContent;
-            
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-            modal.innerHTML = `
-                <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl">
-                    <h3 class="text-xl font-semibold mb-4">Edit Capability</h3>
-                    <form id="editForm" class="space-y-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Capability Name</label>
-                                <input type="text" value="${capabilityName}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Workstream</label>
-                                <input type="text" value="${workstream}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Workstream Lead</label>
-                                <input type="text" value="${workstreamLead}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">SME</label>
-                                <input type="text" value="${sme}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">BA</label>
-                                <input type="text" value="${ba}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Status</label>
-                                <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                                    <option ${status === 'Not Started' ? 'selected' : ''}>Not Started</option>
-                                    <option ${status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                    <option ${status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                    <option ${status === 'On Hold' ? 'selected' : ''}>On Hold</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Technical Milestone</label>
-                                <input type="text" value="${techMilestone}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                                <input type="date" value="${techDate}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Business Milestone</label>
-                                <input type="text" value="${busMilestone}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                                <input type="date" value="${busDate}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                            </div>
-                        </div>
-                        <div class="flex justify-end space-x-3 mt-6">
-                            <button type="button" class="btn-secondary" onclick="this.closest('.fixed').remove()">Cancel</button>
-                            <button type="submit" class="btn-primary">Save Changes</button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            
-            // Handle form submission
-            modal.querySelector('#editForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Update row with new values
-                const form = this;
-                row.querySelector('td:nth-child(2) .font-medium').textContent = form.elements[0].value;
-                row.querySelector('td:nth-child(2) .text-text-secondary').textContent = form.elements[1].value;
-                row.querySelector('td:nth-child(3) .text-sm').textContent = form.elements[2].value;
-                row.querySelector('td:nth-child(4)').textContent = form.elements[3].value;
-                row.querySelector('td:nth-child(5)').textContent = form.elements[4].value;
-                row.querySelector('td:nth-child(8) span').textContent = form.elements[5].value;
-                row.querySelector('td:nth-child(6) .text-sm').textContent = form.elements[6].value;
-                row.querySelector('td:nth-child(7) .text-sm').textContent = form.elements[8].value;
-                modal.remove();
-            });
+            openEditModal(this.closest('tr'));
         });
     }
     
@@ -1184,21 +1139,6 @@ function bindRowEvents(row) {
     }
 }
 
-// Add this helper function for bulk actions
-function updateBulkActions() {
-    const selectedCount = document.querySelectorAll('.capability-checkbox:checked').length;
-    const bulkActions = document.getElementById('bulkActions');
-    const selectedCountElement = document.getElementById('selectedCount');
-    
-    if (selectedCount > 0) {
-        bulkActions.classList.remove('hidden');
-        bulkActions.classList.add('flex');
-        selectedCountElement.textContent = `${selectedCount} selected`;
-    } else {
-        bulkActions.classList.remove('flex');
-        bulkActions.classList.add('hidden');
-    }
-}
 
 // Initialize event bindings for existing rows
 document.addEventListener('DOMContentLoaded', function() {
